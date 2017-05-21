@@ -1,6 +1,22 @@
-from flask import Flask, request
+from flask import Flask, request, Response
+from flask_basicauth import BasicAuth
 import csvhandler
 app = Flask(__name__)
+
+app.config['BASIC_AUTH_USERNAME'] = 'admin'
+app.config['BASIC_AUTH_PASSWORD'] = 'admin'
+
+basic_auth = BasicAuth(app)
+
+@app.route('/cake', methods=['POST', 'DELETE', 'PUT'])
+@basic_auth.required
+def cakeSecret():
+    if request.method=='POST':
+        return
+    if request.method=='DELETE':
+        return
+    if request.method=='PUT':
+        return
 
 @app.route('/cake', methods=['GET', 'POST', 'DELETE', 'PUT'])
 def cake():

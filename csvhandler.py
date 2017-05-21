@@ -14,3 +14,4 @@ def csvRead(ascending):
             print(row['name'], row['price'])
             jsonlist = json.dumps(sortedlist, sort_keys=True)
     return jsonlist
+
