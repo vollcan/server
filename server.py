@@ -25,9 +25,20 @@ def cakeSecret():
         csvhandler.csvWrite(name, price)
         return str(data)
     if request.method=='DELETE':
-        return
+        name = request.form['name']
+        if csvhandler.csvSearch(name) == True:
+            csvhandler.csvDelete(name)
+            return "Record found, deleting"
+        else:
+            return "No record found"
     if request.method=='PUT':
-        return
+        name = request.form['name']
+        price = request.form['price']
+        if csvhandler.csvSearch == True:
+            csvhandler.csvWrite(name, price)
+            return "Record found, changing"
+        else:
+            return "No record found"
 
 @app.route('/cake')
 def cake():

@@ -36,3 +36,12 @@ def csvDelete(name):
             if not name == row['name']:
                 writer.writerow({'name': row['name'], 'price': row['price']})
     shutil.move('buffer.csv','database.csv')
+
+def csvSearch(name):
+    fieldnames = ["name", "price"]
+    with open('database.csv', 'r') as csvfile:
+        reader = csv.DictReader(csvfile, fieldnames=fieldnames)
+        for row in reader:
+            if name == row['name']:
+                return True
+        return False
