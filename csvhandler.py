@@ -1,4 +1,4 @@
-import csv
+import csv, shutil
 import json
 def csvRead(ascending):
     with open('database.csv') as csvfile:
@@ -17,29 +17,22 @@ def csvRead(ascending):
     return jsonlist
 
 def csvWrite(name, price):
-    with open('database.csv') as csvfile:
-        reader = csv.reader(csvfile,delimiter=',')
-        exists = False
+    fieldnames = ["name", "price"]
+    with open('database.csv', 'r') as csvfile, open('buffer.csv', 'w') as outputfile:
+        reader = csv.DictReader(csvfile, fieldnames=fieldnames)
+        writer = csv.DictWriter(outputfile, fieldnames=fieldnames)
         for row in reader:
-            if row[0] == name:
-                row[0] = name
-                row[1] = price
-                exists = True
-        if exists == False:
-            with open('database.csv', 'a') as output:
-                writer = csv.writer(output)
-                writer.writerow((name,price))
-            return
-        '''
-        else:
-            with open('database.csv', 'r+') as output:
-                readers = csv.reader(output)
-                writers = csv.writer(output)
-                writers.writerow(('dupa', 'dupa'))
-                for row in readers:
-                    names = row[0]
-                    prices = row[1]
-                    writers.writerow((names,prices))
-                return
-            '''
+            if not name == row['name']:
+                writer.writerow({'name': row['name'], 'price': row['price']})
+        writer.writerow({'name': str(name), 'price': str(price)})
+    shutil.move('buffer.csv','database.csv')
 
+def csvDelete(name):
+    fieldnames = ["name", "price"]
+    with open('database.csv', 'r') as csvfile, open('buffer.csv', 'w') as outputfile:
+        reader = csv.DictReader(csvfile, fieldnames=fieldnames)
+        writer = csv.DictWriter(outputfile, fieldnames=fieldnames)
+        for row in reader:
+            if not name == row['name']:
+                writer.writerow({'name': row['name'], 'price': row['price']})
+    shutil.move('buffer.csv','database.csv')
