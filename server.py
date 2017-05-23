@@ -63,13 +63,13 @@ def ekac():
 @basic_auth.required
 def cake_clear():
     shutil.copy('database.csv', 'database_old.csv')
-    return "Cleared"
+    return "Cleared", status.HTTP_200_OK
 
 @app.route('/cake/save', methods=['GET'])
 @basic_auth.required
 def cake_save():
     shutil.copy('database_old.csv', 'database.csv')
-    return "Saved"
+    return "Saved", status.HTTP_200_OK
 
 shutil.copy('database.csv', 'database_old.csv')
 flaskrun(app)
