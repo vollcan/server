@@ -1,4 +1,5 @@
 from flask import Flask, request, Response
+import shutil
 from launcher import flaskrun
 from flask_basicauth import BasicAuth
 import csvhandler
@@ -58,4 +59,17 @@ def ekac():
     data = csvhandler.read_from_csv(False)
     return str(data), status.HTTP_200_OK
 
+@app.route('/cake/clear', methods=['GET'])
+@basic_auth.required
+def cake_clear():
+    shutil.copy('database.csv', 'database_old.csv')
+    return "Cleared"
+
+@app.route('/cake/save', methods=['GET'])
+@basic_auth.required
+def cake_save():
+    shutil.copy('database_old.csv', 'database.csv')
+    return "Saved"
+
+shutil.copy('database.csv', 'database_old.csv')
 flaskrun(app)
