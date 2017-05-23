@@ -1,2 +1,4 @@
 *.pyc
+*.swp
 database.csv
+database_old.csv

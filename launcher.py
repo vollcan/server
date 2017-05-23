@@ -10,7 +10,7 @@ def flaskrun(app, default_host="127.0.0.1",
 
     # Set up the command-line options
     parser = optparse.OptionParser()
-    parser.add_option("-H", "--host",
+    parser.add_option("-H", "--hostname",
                       help="Hostname of the Flask app " + \
                            "[default %s]" % default_host,
                       default=default_host)
