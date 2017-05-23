@@ -27,13 +27,13 @@ class Csvhandler_tests(unittest.TestCase):
 
     def test_c_read_from_csv(self):
         data = csvhandler.read_from_csv(True)
-        testdata = [{"price": "price", "name": "name"}]
+        testdata = '[{"name": "name", "price": "price"}]'
         self.assertEqual(data, testdata)
 
     def test_d_delete_from_csv(self):
         csvhandler.delete_from_csv('name')
         data = csvhandler.read_from_csv(True)
-        self.assertEqual(data, [])
+        self.assertEqual(data, '[]')
 
 if __name__ == '__main__':
     unittest.main()

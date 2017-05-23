@@ -1,5 +1,7 @@
 import csv, shutil
 import json
+
+
 def read_from_csv(ascending=True):
     with open('database_old.csv') as csvfile:
         fieldnames = ['name', 'price']
@@ -13,8 +15,8 @@ def read_from_csv(ascending=True):
 
         for row in sortedlist:
             print(row['name'], row['price'])
-        #jsonlist = json.dumps(sortedlist, sort_keys=True)
-    return sortedlist
+        jsonlist = json.dumps(sortedlist, sort_keys=True)
+    return jsonlist
 
 def write_to_csv(name, price):
     fieldnames = ["name", "price"]
@@ -45,3 +47,15 @@ def search_in_csv(name):
             if name == row['name']:
                 return True
         return False
+
+def sort_price():
+    with open('database_old.csv', 'r') as csvfile, open('buffer.csv', 'w') as outputfile:
+        fieldnames = ['name', 'price']
+        reader = csv.DictReader(csvfile, fieldnames=fieldnames)
+        writer = csv.DictWriter(outputfile, fieldnames=fieldnames)
+        sortedlist = sorted(reader, key=lambda row:(
+                    row['price'],row['name']),reverse=False)
+        for row in sortedlist:
+            print(row['name'], row['price'])
+            writer.writerow({'name': row['name'], 'price': row['price']})
+    shutil.move('buffer.csv','database_old.csv')
