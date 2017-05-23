@@ -3,51 +3,59 @@ from launcher import flaskrun
 from flask_basicauth import BasicAuth
 import csvhandler
 import json
+from flask_api import status
+
+
 app = Flask(__name__)
 
-#app.config['BASIC_AUTH_USERNAME'] = 'admin'
-#app.config['BASIC_AUTH_PASSWORD'] = 'admin'
+app.config['BASIC_AUTH_USERNAME'] = 'admin'
+app.config['BASIC_AUTH_PASSWORD'] = 'admin'
 
-#basic_auth = BasicAuth(app)
+basic_auth = BasicAuth(app)
 
-@app.route('/cake', methods=['POST', 'DELETE', 'PUT'])
-#@basic_auth.required
-def cakeSecret():
-    if request.method=='POST':
-        content = request.get_json()
+@app.route('/cake', methods=['DELETE'])
+@basic_auth.required
+def cake_delete():
+    name = request.form['name']
+    if csvhandler.search_in_csv(name) == True:
+        csvhandler.delete_from_csv(name)
+        return "Record found, deleting", status.HTTP_200_OK
+    else:
+        return "No record found", status.HTTP_400_BAD_REQUEST
 
-        name = content['name']
-        price = content['price']
+@app.route('/cake', methods=['PUT'])
+@basic_auth.required
+def cake_put():
+    name = request.form['name']
+    price = request.form['price']
+    if csvhandler.search_in_csv(name) == True:
+        csvhandler.write_to_csv(name, price)
+        return "Record found, changing", status.HTTP_200_OK
+    else:
+        return "No record found", status.HTTP_400_BAD_REQUEST
 
-        data = {'name': name, 'price': price}
-        print name
-        print price
-        csvhandler.csvWrite(name, price)
-        return str(data)
-    if request.method=='DELETE':
-        name = request.form['name']
-        if csvhandler.csvSearch(name) == True:
-            csvhandler.csvDelete(name)
-            return "Record found, deleting"
-        else:
-            return "No record found"
-    if request.method=='PUT':
-        name = request.form['name']
-        price = request.form['price']
-        if csvhandler.csvSearch == True:
-            csvhandler.csvWrite(name, price)
-            return "Record found, changing"
-        else:
-            return "No record found"
+@app.route('/cake', methods=['POST'])
+@basic_auth.required
+def cake_post():
+    content = request.get_json()
+    
+    name = content['name']
+    price = content['price']
 
-@app.route('/cake')
+    data = {'name': name, 'price': price}
+    print name
+    print price
+    csvhandler.write_to_csv(name, price)
+    return str(data), status.HTTP_200_OK
+
+@app.route('/cake', methods=['GET'])
 def cake():
-    if request.method=='GET':
-        data = csvhandler.csvRead(True)
-        return str(data)
+    data = csvhandler.read_from_csv(True)
+    return str(data), status.HTTP_200_OK
 
-@app.route('/ekac')
+@app.route('/ekac', methods=['GET'])
 def ekac():
-    return str(csvhandler.csvRead(False))
+    data = csvhandler.read_from_csv(False)
+    return str(data), status.HTTP_200_OK
 
 flaskrun(app)

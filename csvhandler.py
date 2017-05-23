@@ -1,6 +1,6 @@
 import csv, shutil
 import json
-def csvRead(ascending):
+def read_from_csv(ascending=True):
     with open('database.csv') as csvfile:
         fieldnames = ['name', 'price']
         reader = csv.DictReader(csvfile, fieldnames=fieldnames)
@@ -16,7 +16,7 @@ def csvRead(ascending):
             jsonlist = json.dumps(sortedlist, sort_keys=True)
     return jsonlist
 
-def csvWrite(name, price):
+def write_to_csv(name, price):
     fieldnames = ["name", "price"]
     with open('database.csv', 'r') as csvfile, open('buffer.csv', 'w') as outputfile:
         reader = csv.DictReader(csvfile, fieldnames=fieldnames)
@@ -27,7 +27,7 @@ def csvWrite(name, price):
         writer.writerow({'name': str(name), 'price': str(price)})
     shutil.move('buffer.csv','database.csv')
 
-def csvDelete(name):
+def delete_from_csv(name):
     fieldnames = ["name", "price"]
     with open('database.csv', 'r') as csvfile, open('buffer.csv', 'w') as outputfile:
         reader = csv.DictReader(csvfile, fieldnames=fieldnames)
@@ -37,7 +37,7 @@ def csvDelete(name):
                 writer.writerow({'name': row['name'], 'price': row['price']})
     shutil.move('buffer.csv','database.csv')
 
-def csvSearch(name):
+def search_in_csv(name):
     fieldnames = ["name", "price"]
     with open('database.csv', 'r') as csvfile:
         reader = csv.DictReader(csvfile, fieldnames=fieldnames)
