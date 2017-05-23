@@ -47,17 +47,17 @@ def cake_post():
     print name
     print price
     csvhandler.write_to_csv(name, price)
-    return str(data), status.HTTP_200_OK
+    return "Added or modified record", status.HTTP_200_OK
 
 @app.route('/cake', methods=['GET'])
 def cake():
     data = csvhandler.read_from_csv(True)
-    return str(data), status.HTTP_200_OK
+    return data, status.HTTP_200_OK
 
 @app.route('/ekac', methods=['GET'])
 def ekac():
     data = csvhandler.read_from_csv(False)
-    return str(data), status.HTTP_200_OK
+    return data, status.HTTP_200_OK
 
 @app.route('/cake/clear', methods=['GET'])
 @basic_auth.required

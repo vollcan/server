@@ -13,8 +13,8 @@ def read_from_csv(ascending=True):
 
         for row in sortedlist:
             print(row['name'], row['price'])
-            jsonlist = json.dumps(sortedlist, sort_keys=True)
-    return jsonlist
+        #jsonlist = json.dumps(sortedlist, sort_keys=True)
+    return sortedlist
 
 def write_to_csv(name, price):
     fieldnames = ["name", "price"]

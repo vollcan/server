@@ -26,5 +26,13 @@ class Server_tests(unittest.TestCase):
         r = requests.delete('http://localhost:5000/cake', data = {'name': 'name'}, auth=('admin', 'admin'))
         self.assertEqual(int(r.status_code), 200)
 
+    def test_cake_clear(self):
+        r = requests.get('http://localhost:5000/cake/clear', auth=('admin', 'admin'))
+        self.assertEqual(int(r.status_code), 200)
+
+    def test_cake_save(self):
+        r = requests.get('http://localhost:5000/cake/save', auth=('admin', 'admin'))
+        self.assertEqual(int(r.status_code), 200)
+
 if __name__ == '__main__':
     unittest.main()
